@@ -1,0 +1,85 @@
+{% extends "main/home.html"%}
+{% load static %}
+{% block title %}
+<title>Add Passwords</title>
+{% endblock title %}
+{%block content%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <form method="POST">
+    {% csrf_token %}
+    <div class="div-container">
+      <p1 class="main-color">
+        <p><label for="id_website_name">Website name:</label> <input type="text" name="website_name" maxlength="50" required id="id_website_name"></p>
+        <p><label for="id_website_link">Website link:</label> <input type="url" name="website_link" maxlength="180" required id="id_website_link"></p>
+        <p><label for="id_website_username">Website username:</label> <input type="text" name="website_username" maxlength="50" required id="id_website_username"></p>
+        <p><label for="id_website_password">Website password:</label> <input type="password" name="website_password" maxlength="50" required id="id_website_password" onkeyup="checkPasswordStrength()">
+          <button class="btn" type="button" id="generate_password" onclick="generatePassword(),checkPasswordStrength()">Generate Password</button>
+          <button class="btn" id="toggle-button" onclick="togglePassword()">Show Password</button>
+        </p>
+        <p><label for="id_website_notes">Website notes:</label> <input type="text" name="website_notes" maxlength="50" required id="id_website_notes"></p>
+        <p><label for="id_master_password">Master password:</label> <input type="password" name="master_password" maxlength="55" required id="id_master_password"></p>
+        <input style="border-radius:10px;" type="submit" value="Submit">
+      </p1>
+    </div>
+  </form>
+<script>
+function generatePassword() {
+  var password = '';
+  var allowedChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]\:;?><,./-=';
+  for (var i = 0; i < 20; i++) {
+    password += allowedChars.charAt(Math.floor(Math.random() * allowedChars.length));
+  }
+  document.getElementById('id_website_password').value = password;
+}
+
+function togglePassword() {
+  var passwordField = document.getElementById("id_website_password");
+  if (passwordField.type === "password") {
+    passwordField.type = "text";
+    document.getElementById("toggle-button").innerHTML = "Hide Password";
+  } else {
+    passwordField.type = "password";
+    document.getElementById("toggle-button").innerHTML = "Show Password";
+  }
+}
+
+
+function checkPasswordStrength() {
+  var password = document.getElementById("id_website_password").value;
+  var passwordStrength = 0;
+  
+  // Check for lowercase letters
+  if (/[a-z]/.test(password)) {
+    passwordStrength += 1;
+  }
+  
+  // Check for uppercase letters
+  if (/[A-Z]/.test(password)) {
+    passwordStrength += 1;
+  }
+  
+  // Check for numbers
+  if (/[0-9]/.test(password)) {
+    passwordStrength += 1;
+  }
+  
+  // Check for special characters
+  if (/[$@$!%*?&]/.test(password)) {
+    passwordStrength += 1;
+  }
+
+  var passwordField = document.getElementById("id_website_password");
+  
+  // Change color based on password strength
+  if (passwordStrength == 0) {
+    passwordField.style.backgroundColor = "white"; // Light red
+  } else if (passwordStrength == 1 || passwordStrength == 2) {
+    passwordField.style.backgroundColor = "yellow"; // Light yellow
+  } else {
+    passwordField.style.backgroundColor = "green"; // Light green
+  }
+}
+
+
+</script>
+{% endblock content %}

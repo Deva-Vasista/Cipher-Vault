@@ -1,0 +1,22 @@
+{% extends "main/home.html" %}
+{% load static %}
+{% block title %}
+<title>Update Password: {{ location.website_name }}</title>
+{% endblock title %}
+{% block content %}
+<div class="div-container">
+  <form method="POST">
+    {% csrf_token %}
+    <h2 class="main-color">Update Password for {{ location.website_name }}</h2>
+    <div>
+      <label for="master_password" class="main-color">Master Password:</label>
+      <input type="password" id="master_password" name="master_password" required>
+    </div>
+    <div>
+      <label for="website_password" class="main-color">Website Password:</label>
+      <input type="password" id="website_password" name="website_password" required>
+    </div>
+    <input type="submit" value="Update Password" class="btn">
+  </form>
+</div>
+{% endblock content %}
